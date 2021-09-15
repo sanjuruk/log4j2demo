@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+
+    <Properties>
+        <Property name="CONSOLE_LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} %p - %msg%n</Property>
+        <Property name="FILE_LOG_PATTERN">%d{HH:mm:ss.SSS} %p - %msg%n</Property>
+        <Property name="APP_LOG_ROOT">./logs</Property>
+    </Properties>
+
+    <Appenders>
+
+        <Console name="LogToConsole" target="SYSTEM_OUT">
+            <PatternLayout pattern="${CONSOLE_LOG_PATTERN}" />
+        </Console>
+
+        <!-- <File name="LogToFile" fileName="${APP_LOG_ROOT}/${sys:logFilename}-${date:yyyyMMdd}.log" immediateFlush="false" append="true">
+            <PatternLayout pattern="${FILE_LOG_PATTERN}"/>
+        </File> -->
+
+        <RollingFile name="LogToRollingFile" fileName="${APP_LOG_ROOT}/${sys:logFilename}.log" 
+                                filePattern="${APP_LOG_ROOT}/$${date:yyyy-MM}/${sys:logFilename}-%d{MM-dd-yyyy}-%i.log.gz">
+             <PatternLayout pattern="${FILE_LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="7" modulate="true"/>
+                <!-- <SizeBasedTriggeringPolicy size="1 MB"/> -->
+            </Policies>
+        </RollingFile>
+
+    </Appenders>
+    <Loggers>
+        <!-- <Logger name="com.monitoring6.frodo.lembas" level="TRACE">
+            <AppenderRef ref="LogToRollingFile"/>
+        </Logger> -->
+        <Root level="TRACE">
+            <AppenderRef ref="LogToRollingFile"/>
+            <AppenderRef ref="LogToConsole"/>
+        </Root>
+    </Loggers>
+</Configuration>
